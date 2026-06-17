@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en" data-theme-id="fusion">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOB OS — Ultimate Fusion Edition</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Google Fonts: Premium Typography -->
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Lucide Icons CDN -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+/* ══════════════════════════════════════════════════════════════
+   TOB OS ULTIMATE FUSION DESIGN SYSTEM & MECHANICAL LAYOUT
+══════════════════════════════════════════════════════════════ */
+:root {
+  --font-sans: 'Outfit', 'Inter', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+  --bg: #030816;
+  --bg-gradient: radial-gradient(circle at 50% 50%, #0d1b3e 0%, #020714 100%);
+  --panel: rgba(10, 22, 47, 0.72);
+  --panel-solid: #060e1e;
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --win-bar: rgba(6, 15, 33, 0.85);
+  --taskbar: rgba(4, 10, 24, 0.65);
+  --neon: #3b82f6;
+  --neon-glow: rgba(59, 130, 246, 0.4);
+  --neon2: #6366f1;
+  --neon3: #10b981;
+  --accent: #f43f5e;
+  --gold: #f59e0b;
+  --green: #10b981;
+  --text: #f1f5f9;
+  --text-dim: #94a3b8;
+  --text-muted: #64748b;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+  --shadow-depth: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --sb-h: 30px;
+  --tb-h: 52px;
+}
+
+/* ── THEME: LIQUID GLASS ── */
+html[data-theme-id="glass"] {
+  --bg: #020714;
+  --bg-gradient: radial-gradient(circle at 50% 50%, #15264c 0%, #01040a 100%);
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel-solid: rgba(15, 23, 42, 0.85);
+  --panel-border: rgba(255, 255, 255, 0.15);
+  --win-bar: rgba(255, 255, 255, 0.08);
+  --taskbar: rgba(255, 255, 255, 0.05);
+  --neon: #38bdf8;
+  --neon2: #818cf8;
+  --neon-glow: rgba(56, 189, 248, 0.45);
+  --text: #f8fafc;
+  --text-dim: #cbd5e1;
+  --text-muted: #64748b;
+}
+
+/* ── THEME: FLUENT (WINDOWS 11 STYLE) ── */
+html[data-theme-id="fluent"] {
+  --bg: #1c1c1c;
+  --bg-gradient: linear-gradient(135deg, #1f1f1f 0%, #111111 100%);
+  --panel: rgba(32, 32, 32, 0.85);
+  --panel-solid: #202020;
+  --panel-border: rgba(255, 255, 255, 0.09);
+  --win-bar: #2d2d2d;
+  --taskbar: rgba(32, 32, 32, 0.75);
+  --neon: #60cdff;
+  --neon2: #0078d4;
+  --neon-glow: rgba(96, 205, 255, 0.3);
+  --text: #ffffff;
+  --text-dim: #cccccc;
+  --text-muted: #767676;
+  --radius-lg: 8px;
+  --radius-md: 6px;
+  --radius-sm: 4px;
+}
+
+/* ── THEME: APPLE ── */
+html[data-theme-id="apple"] {
+  --bg: #1e1e1e;
+  --bg-gradient: radial-gradient(circle at center, #2d2d2d 0%, #0d0d0d 100%);
+  --panel: rgba(23, 23, 23, 0.75);
+  --panel-solid: #171717;
+  --panel-border: rgba(255, 255, 255, 0.12);
+  --win-bar: rgba(35, 35, 35, 0.9);
+  --taskbar: rgba(23, 23, 23, 0.5);
+  --neon: #0a84ff;
+  --neon2: #5e5ce6;
+  --neon-glow: rgba(10, 132, 255, 0.4);
+  --text: #ffffff;
+  --text-dim: #ebebf5;
+  --text-muted: #8e8e93;
+  --radius-lg: 24px;
+  --radius-md: 18px;
+  --radius-sm: 10px;
+}
+
+/* ── THEME: FUSION (DEFAULT - APPLE 50% + WINDOWS 50%) ── */
+html[data-theme-id="fusion"] {
+  --bg: #070b19;
+  --bg-gradient: radial-gradient(ellipse at center, #0f1c3f 0%, #030611 100%);
+  --panel: rgba(13, 25, 48, 0.65);
+  --panel-solid: #091022;
+  --panel-border: rgba(255, 255, 255, 0.11);
+  --win-bar: rgba(13, 24, 46, 0.85);
+  --taskbar: rgba(8, 16, 33, 0.5);
+  --neon: #2563eb;
+  --neon2: #4f46e5;
+  --neon-glow: rgba(37, 99, 235, 0.4);
+  --text: #f8fafc;
+  --text-dim: #cbd5e1;
+  --text-muted: #64748b;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+}
+
+/* Global resets & standards */
+*,*::before,*::after { margin: 0; padding: 0; box-sizing: border-box; }
+html,body { width:100%; height:100%; overflow:hidden; font-family:'Rajdhani', sans-serif; background:var(--bg); color:var(--text); }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.15); }
+::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--neon); }
+
+/* Apply blur to all translucent UI elements */
+.glass-panel {
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+}
+
+/* Wallpaper layer background controller */
+#bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: var(--bg-gradient);
+  transition: background 0.6s cubic-bezier(0.16, 1, 0.3, 1), background-image 0.6s ease;
+}
+#bg-layer.wp-grid {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── TOP BAR (macOS / Status Bar Style) ── */
+#statusbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--sb-h);
+  z-index: 300;
+  background: rgba(2, 6, 18, 0.45);
+  border-bottom: 1px solid var(--panel-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ── FLOATING APPS DOCK ── */
+#dock-container {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-depth);
+  transition: var(--transition);
+}
+.dock-item {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: 0 5px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s;
+}
+.dock-item:hover {
+  transform: scale(1.18) translateY(-6px);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--neon);
+}
+.dock-item-dot {
+  position: absolute;
+  bottom: 2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--neon);
+  box-shadow: 0 0 8px var(--neon);
+}
+
+/* ── WINDOW FRAMEWORK ── */
+.os-window {
+  position: absolute;
+  z-index: 50;
+  min-width: 320px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-depth);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  animation: winOpen 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.os-window.focused {
+  border-color: var(--neon);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65), 0 0 24px var(--neon-glow);
+}
+@keyframes winOpen {
+  from { opacity: 0; transform: scale(0.92) translateY(18px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.win-bar {
+  height: var(--win-bar-h);
+  background: var(--win-bar);
+  border-bottom: 1px solid var(--panel-border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  cursor: move;
+  user-select: none;
+}
+.win-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.wc {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.wc:hover { transform: scale(1.2); }
+.wc-close { background: #ff5f57; }
+.wc-min { background: #febc2e; }
+.wc-max { background: #27c840; }
+.win-title {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  padding-right: 60px;
+}
+.win-body {
+  flex: 1;
+  background: var(--bg);
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── PREMIUM WIDGET LAB DESIGN ── */
+.wl-widget-container {
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--shadow-depth);
+  transition: transform 0.3s, border-color 0.3s;
+}
+.wl-widget-container:hover {
+  transform: translateY(-4px);
+  border-color: var(--neon);
+}
+
+/* ── DYNAMIC ISLAND & AI COGNITIVE INTERFACE ── */
+#dynamic-island-container {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 160px;
+  height: 32px;
+  background: #000000;
+  border-radius: 20px;
+  z-index: 10000;
+  transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+#dynamic-island-container.expanded {
+  width: 420px;
+  height: 520px;
+  border-radius: 28px;
+  padding: 16px;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: rgba(0, 0, 0, 0.94);
+  border-color: var(--neon);
+}
+.island-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+.island-chat-log {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.island-msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.island-msg.user {
+  align-self: flex-end;
+  background: var(--neon);
+  color: #ffffff;
+}
+.island-msg.tob {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.island-input-row {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.island-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 8px 16px;
+  color: #fff;
+  outline: none;
+}
+.island-input:focus { border-color: var(--neon); }
+
+/* ── SETTINGS SIDEBAR WORKSPACE ── */
+.settings-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+}
+.settings-sidebar-item:hover, .settings-sidebar-item.active {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--neon);
+}
+
+/* ── APPS CATALOG DESIGN ── */
+.app-store-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  transition: var(--transition);
+}
+.app-store-card:hover {
+  border-color: var(--neon);
+  transform: translateY(-2px);
+}
+
+/* Lock Screen */
+#lock-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: rgba(2, 6, 18, 0.88);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+#lock-screen.show { display: flex; }
+</style>
+</head>
+<body class="select-none overflow-hidden">
+
+<!-- WALLPAPER LAYER -->
+<div id="bg-layer" class="wp-grid"></div>
+
+<!-- MATRIX / PARTICLE LAYER -->
+<canvas id="particle-canvas"></canvas>
+<div id="scanlines"></div>
+
+<!-- DESKTOP WORKSPACE -->
+<div id="desktop">
+  <div class="home-watermark">TOB OS</div>
+  <div id="icon-grid" class="absolute inset-0 p-8 grid grid-flow-col auto-cols-max grid-rows-6 gap-6 z-10 pointer-events-none"></div>
+  <div id="dw-layer"></div>
+</div>
+
+<!-- DYNAMIC ISLAND (TOP CENTER) -->
+<div id="dynamic-island-container" onclick="TOB_IslandAI.toggleExpansion(event)">
+  <div id="island-minimal-view" class="flex items-center gap-2 text-xs font-semibold px-4 w-full h-full justify-between">
+    <span class="text-blue-400 font-bold animate-pulse">◈ TOB CORE</span>
+    <span id="island-status-text" class="text-slate-400 text-[10px]">COGNITIVE ONLINE</span>
+  </div>
+  <div class="island-chat-wrapper hidden w-full h-full flex flex-col">
+    <div class="island-header">
+      <span class="text-xs font-black text-blue-400 tracking-widest">🧠 TOB COGNITIVE CORE</span>
+      <button class="text-slate-400 hover:text-rose-400 transition-colors" onclick="TOB_IslandAI.toggleExpansion(event)">✕</button>
+    </div>
+    <div class="island-chat-log" id="island-chat-log"></div>
+    <div class="island-input-row" onclick="event.stopPropagation()">
+      <input type="text" class="island-input" id="island-chat-input" placeholder="Ask TOB anything..." onkeydown="if(event.key==='Enter') TOB_IslandAI.send()">
+      <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-colors" onclick="TOB_IslandAI.send()">SEND</button>
+    </div>
+  </div>
+</div>
+
+<!-- STATUS BAR (macOS Style top bar) -->
+<div id="statusbar">
+  <div class="sb-group flex items-center gap-3">
+    <div class="sb-dot w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></div>
+    <span class="font-extrabold tracking-widest bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent cursor-pointer" onclick="toggleStartMenu()">TOB OS</span>
+    <span id="sb-active-title" class="text-slate-400 font-medium">DESKTOP</span>
+  </div>
+  <div class="sb-group flex items-center gap-4">
+    <div id="sb-battery" class="flex items-center gap-1.5 text-[10px] text-slate-300">
+      <div class="bat-icon"><div class="bat-fill" id="bat-fill" style="width:100%"></div></div>
+      <span id="bat-pct">100%</span>
+    </div>
+    <span id="sb-ver-badge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 cursor-pointer">v18.0 ✓</span>
+    <span id="sb-clock" class="text-slate-200 font-semibold cursor-pointer">00:00</span>
+  </div>
+</div>
+
+<!-- FLOATING DOCK (macOS/iOS style) -->
+<div id="dock-container" class="glass-panel">
+  <!-- Dynamic dock icons populated by JS -->
+</div>
+
+<!-- LOCK SCREEN -->
+<div id="lock-screen">
+  <div class="flex flex-col items-center gap-4">
+    <div class="text-5xl font-black text-white tracking-widest" id="lock-clock">00:00</div>
+    <div class="text-xs font-bold text-slate-400 tracking-wider" id="lock-date">MONDAY, JUNE 15</div>
+    <div id="lock-auth-area" class="flex flex-col items-center gap-4 mt-6">
+      <!-- Populated dynamically if PIN profile is set -->
+      <button class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-full tracking-wider transition-all" onclick="unlockScreen()">◈ CLICK TO ENTER WORKSPACE</button>
+    </div>
+  </div>
+</div>
+
+<!-- START MENU (Windows-style multitasking launcher) -->
+<div id="start-menu" class="glass-panel">
+  <div class="text-xs font-black text-blue-400 tracking-wider mb-3">◈ APPLICATIONS</div>
+  <div class="grid grid-cols-4 gap-3" id="sm-app-grid"></div>
+  <div class="border-t border-white/10 my-4"></div>
+  <div class="flex items-center justify-between">
+    <button class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[11px] font-bold text-slate-300 transition-colors" onclick="openApp('settings')">⚙ Settings</button>
+    <button class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[11px] font-bold text-slate-300 transition-colors" onclick="applyTheme(OS.theme==='dark'?'light':'dark')">☀ Theme</button>
+  </div>
+</div>
+
+<!-- DYNAMIC GLOBAL CONFIRMATION MODAL -->
+<div id="confirm-modal" class="fixed inset-0 z-[11000] flex items-center justify-center p-4 bg-slate-950/70 opacity-0 pointer-events-none transition-opacity duration-200">
+  <div class="bg-slate-900 border border-white/10 rounded-2xl max-w-sm w-full p-6 shadow-2xl transform translate-y-4 transition-transform duration-200" id="confirm-modal-box">
+    <h3 class="text-md font-bold text-blue-400 mb-2" id="confirm-title">Are you sure?</h3>
+    <p class="text-xs text-slate-400 mb-5 leading-relaxed" id="confirm-message">Confirm message text.</p>
+    <div class="flex items-center justify-end gap-2 text-xs font-bold">
+      <button id="confirm-cancel-btn" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300">Cancel</button>
+      <button id="confirm-ok-btn" class="px-4 py-2 rounded-xl text-white bg-blue-600 hover:bg-blue-700">Yes, Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP CREATOR MODAL -->
+<div class="modal-backdrop" id="ac-modal">
+  <div class="modal-dialog w-96">
+    <div class="modal-title">◈ CREATE CUSTOM APPLICATION</div>
+    <div class="modal-field">
+      <label class="modal-label">APPLICATION NAME</label>
+      <input class="modal-input" id="ac-name" type="text" placeholder="My App..." maxlength="20">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">ICON EMOJI</label>
+      <div class="flex gap-3 items-center">
+        <div id="ac-icon-preview" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-lg">📱</div>
+        <input class="modal-input" id="ac-emoji" type="text" placeholder="Emoji e.g. 🚀" maxlength="4" oninput="updateIconPreview()">
+      </div>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">CONTENT TYPE</label>
+      <select class="modal-select" id="ac-type" onchange="updateCreatorType()">
+        <option value="url">URL / External Page</option>
+        <option value="html">Custom HTML Code</option>
+      </select>
+    </div>
+    <div class="modal-field" id="ac-url-field">
+      <label class="modal-label">URL</label>
+      <input class="modal-input" id="ac-url" type="text" placeholder="https://...">
+    </div>
+    <div class="modal-field hidden" id="ac-html-field">
+      <label class="modal-label">HTML CONTENT</label>
+      <textarea class="modal-textarea" id="ac-html" placeholder="<h1>Hello World!</h1>"></textarea>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">WINDOW SIZE</label>
+      <select class="modal-select" id="ac-size">
+        <option value="md">Medium (700×480)</option>
+        <option value="lg">Large (900×580)</option>
+        <option value="sm">Small (480×360)</option>
+      </select>
+    </div>
+    <div class="modal-btns mt-4">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('ac-modal')">✕ CANCEL</button>
+      <button class="modal-btn modal-btn-primary" onclick="saveCustomApp()">✦ CREATE APP</button>
+    </div>
+  </div>
+</div>
+
+<!-- HIDDEN CHANNELS -->
+<input type="file" id="wp-file-input" accept="image/*" class="hidden" onchange="handleWallpaperUpload(event)">
+<input type="file" id="mod-file-input" accept=".json" class="hidden" onchange="handleModInstall(event)">
+<input type="file" id="finder-file-input" multiple class="hidden" onchange="finderHandleUpload(event)">
+<audio id="audio-el" class="hidden"></audio>
+
+<!-- MONTHLY WRAPPED PRESENTATION MODAL -->
+<div id="wrapped-modal" class="fixed inset-0 z-[12000] flex items-center justify-center p-4 bg-slate-950/80 opacity-0 pointer-events-none transition-opacity duration-300">
+  <div class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 text-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-white/10 overflow-hidden transform scale-95 transition-transform duration-300" id="wrapped-modal-box">
+    <div class="absolute -top-12 -right-12 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
+    <button onclick="closeWrappedModal()" class="absolute top-4 right-4 text-white/60 hover:text-white p-1 rounded-full hover:bg-white/10">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+    <div class="text-center space-y-4 py-4 relative z-10">
+      <div class="bg-blue-500/20 text-blue-300 px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase inline-flex items-center gap-1.5 shadow-md">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Child Progress Wrapped
+      </div>
+      <h2 class="text-2xl font-black tracking-tight mt-1" id="wrapped-title">Your Progress Report</h2>
+      <div class="grid grid-cols-2 gap-3 pt-3">
+        <div class="bg-white/5 border border-white/5 p-3 rounded-2xl text-center">
+          <p class="text-[9px] font-bold text-emerald-300 uppercase tracking-wider">Total Earned</p>
+          <p class="text-xl font-extrabold text-emerald-400" id="wrapped-gained">+$150</p>
+        </div>
+        <div class="bg-white/5 border border-white/5 p-3 rounded-2xl text-center">
+          <p class="text-[9px] font-bold text-rose-300 uppercase tracking-wider">Total Deductions</p>
+          <p class="text-xl font-extrabold text-rose-400" id="wrapped-lost">-$45</p>
+        </div>
+      </div>
+      <div class="bg-white/5 border border-white/5 p-4 rounded-2xl text-left space-y-2 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">⭐</span>
+          <div>
+            <p class="text-[9px] font-semibold text-slate-400">Biggest Accomplishment</p>
+            <p class="text-xs font-bold text-amber-300" id="wrapped-biggest-achievement">Finished chores beautifully!</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 border-t border-white/5 pt-2">
+          <span class="text-lg">📈</span>
+          <div>
+            <p class="text-[9px] font-semibold text-slate-400">Net Growth</p>
+            <p class="text-xs font-bold text-emerald-300" id="wrapped-net-growth">+105 points net change</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 border-t border-white/5 pt-2">
+          <span class="text-lg">🏅</span>
+          <div>
+            <p class="text-[9px] font-semibold text-slate-400">Earned Badges</p>
+            <div class="flex flex-wrap gap-1.5 mt-1" id="wrapped-badges"></div>
+          </div>
+        </div>
+      </div>
+      <button onclick="closeWrappedModal()" class="w-full py-2.5 bg-blue-600 rounded-xl font-bold text-xs text-white shadow-lg hover:brightness-110 active:scale-95 transition-all">
+        Awesome, keep going!
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── GLOBAL TOAST STATE INITS (Prevent TDZ Errors) ── */
+let _toastT;
+
+/* ── TOAST DISPATCH FUNCTION ── */
+function toast(msg, dur = 2400) {
+  let el = document.getElementById('toast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'toast';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.className = 'show';
+  el.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(2,8,22,0.92);border:1px solid var(--panel-border);padding:8px 18px;border-radius:20px;font-size:11px;color:#fff;backdrop-filter:blur(24px);z-index:11000;pointer-events:none;';
+  clearTimeout(_toastT);
+  _toastT = setTimeout(() => el.style.opacity = '0', dur);
+  el.style.opacity = '1';
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TOB OS ULTIMATE CORE SYSTEM ENGINE
+══════════════════════════════════════════════════════════════ */
+const TOB_VERSION = '18.0.0';
+
+// Centralised Local Storage Helper
+const LS = {
+  get: (k, d = null) => { try { const v = localStorage.getItem(k); return v !== null ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+// Global OS Configuration State
+const OS = {
+  theme: LS.get('tob_theme_id', 'fusion'), // default theme is now "fusion" (50% apple, 50% windows)
+  wallpaper: LS.get('tob_wallpaper', 'wp-grid'),
+  wpCustom: LS.get('tob_wp_custom', null),
+  track: LS.get('tob_track', 'ambient'),
+  volume: LS.get('tob_volume', 0.5),
+  customApps: LS.get('tob_apps', []),
+  hiddenApps: LS.get('tob_hidden', []),
+  gridSlots: LS.get('tob_grid', {}),
+  mods: LS.get('tob_mods', []),
+  adminUnlocked: LS.get('tob_admin', false),
+};
+
+// --- DYNAMIC THEMING CONTROLLER ---
+const THEMES = {
+  fusion: { name: 'Fusion', desc: 'Sleek premium 50% Apple Classic / 50% Windows Fluent blend' },
+  glass: { name: 'Liquid Glass', desc: 'Stunning VisionOS frosted glass layers with light refraction' },
+  fluent: { name: 'Windows Fluent', desc: 'Acylic panels, sharp grids & Mica backgrounds' },
+  apple: { name: 'Apple Classic', desc: 'macOS Tahoe style centered dock and dynamic curves' }
+};
+
+function applyTheme(themeId) {
+  if (!THEMES[themeId]) themeId = 'fusion';
+  document.documentElement.setAttribute('data-theme-id', themeId);
+  OS.theme = themeId;
+  LS.set('tob_theme_id', themeId);
+  toast(`Theme profile mounted: ${THEMES[themeId].name}`);
+}
+
+// Initialize Active Theme Node
+applyTheme(OS.theme);
+
+// --- LIGHT / DARK MODE TOGGLER ---
+function applyLightDarkMode(mode) {
+  document.documentElement.setAttribute('data-theme', mode);
+  LS.set('tob_theme', mode);
+}
+applyLightDarkMode(LS.get('tob_theme', 'dark'));
+
+// --- DOCK SYSTEM (macOS Floating Style) ---
+function buildDesktopDock() {
+  const container = document.getElementById('dock-container');
+  if (!container) return;
+  container.innerHTML = '';
+  
+  const apps = getVisibleApps();
+  apps.slice(0, 10).forEach(app => {
+    const item = document.createElement('div');
+    item.className = 'dock-item';
+    item.title = app.label;
+    item.innerHTML = `<span>${app.icon || '📱'}</span>`;
+    
+    // running indicator
+    if (WM.windows.has(app.id)) {
+      const dot = document.createElement('div');
+      dot.className = 'dock-item-dot';
+      item.appendChild(dot);
+    }
+    
+    item.onclick = () => openApp(app.id);
+    container.appendChild(item);
+  });
+}
+
+// --- CLOCK AND CALENDAR ---
+function updateClock() {
+  const n = new Date();
+  const t = `${String(n.getHours()).padStart(2, '0')}:${String(n.getMinutes()).padStart(2, '0')}`;
+  const clEl = document.getElementById('sb-clock');
+  const lclEl = document.getElementById('lock-clock');
+  if (clEl) clEl.textContent = t;
+  if (lclEl) lclEl.textContent = t;
+}
+updateClock();
+setInterval(updateClock, 10000);
+
+// --- APP DRAWER ENGINE ---
+function getVisibleApps() {
+  const base = [...BUILTIN_APPS, ...OS.customApps].filter(a => !OS.hiddenApps.includes(a.id));
+  return base;
+}
+
+function openModal(id) { document.getElementById(id)?.classList.add('open'); }
+function closeModal(id) { document.getElementById(id)?.classList.remove('open'); }
+
+// --- CHILD REWARD TRACKER ("MY PROGRESS" NATIVE WORKSPACE) ---
+// Seed initial child state if empty
+const childDefaultState = {
+  goals: { name: 'iPhone 17e', cost: 600 },
+  balance: 150,
+  logs: [
+    { date: '2026-06-15', description: 'Finished chores beautifully', gained: 20 },
+    { date: '2026-06-16', description: 'Arrived on time for math study', gained: 15 },
+    { date: '2026-06-17', description: 'Completed home cleaning duties', gained: 10 }
+  ]
+};
+
+let childState = LS.get('tob_child_progress_state', childDefaultState);
+
+function saveChildState() {
+  LS.set('tob_child_progress_state', childState);
+}
+
+function buildChildProgressApp(body) {
+  body.style.overflow = 'hidden';
+  body.style.padding = '0';
+  
+  const percentage = Math.min(100, Math.floor((childState.balance / childState.goals.cost) * 100)) || 0;
+  const remaining = Math.max(0, childState.goals.cost - childState.balance);
+
+  let quote = "Every small success daily gets you closer to redemption. Keep logging your positive behaviors!";
+  if (percentage >= 100) quote = "Outstanding job! Your efforts completely paid off. Ask parents to redeem your goal now! 🎉";
+  else if (percentage >= 75) quote = "Almost there! Only a small sprint remains until you cross the finish line.";
+  else if (percentage >= 50) quote = "Halfway! You are doing incredibly well. Keep showing helpful behaviors around the family!";
+
+  body.innerHTML = `
+    <div class="h-full flex flex-col" style="font-family:'Rajdhani', sans-serif; background:#020712; color:#f8fafc;">
+      <!-- Title header banner -->
+      <div class="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+        <div>
+          <h2 class="text-sm font-bold text-blue-400 tracking-wider">⚜ CHILD PROGRESS CENTER</h2>
+          <p class="text-[10px] text-slate-400">Monitor your active point balances and redeem premium goal rewards!</p>
+        </div>
+        <button onclick="openSpotifyWrapped()" class="px-4 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-xs font-bold text-white rounded-full shadow-lg transition-all hover:brightness-110 active:scale-95 flex items-center gap-1.5 animate-pulse">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> View Wrapped Summary
+        </button>
+      </div>
+
+      <!-- Main Workspace grid -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-4">
+        <!-- Balance Cards -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col justify-center">
+            <span class="text-[9px] font-bold text-blue-400 uppercase tracking-widest">Active Balance</span>
+            <div class="text-3xl font-black text-emerald-400 mt-1">$${childState.balance}</div>
+            <span class="text-[9px] text-slate-500 mt-0.5">Value equal to 1 Point = $1.00 USD</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col justify-center">
+            <span class="text-[9px] font-bold text-amber-400 uppercase tracking-widest">Target Reward Goal</span>
+            <div class="text-md font-bold text-slate-200 mt-1 truncate">${childState.goals.name}</div>
+            <span class="text-[9px] text-blue-400 mt-0.5">$${childState.goals.cost} points required</span>
+          </div>
+        </div>
+
+        <!-- Progress Track -->
+        <div class="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-2">
+          <div class="flex justify-between text-xs font-bold">
+            <span class="text-slate-400">Redemption Roadmap</span>
+            <span class="text-emerald-400">${percentage}% Complete</span>
+          </div>
+          <div class="w-full bg-white/10 rounded-full h-3.5 overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-blue-500 via-teal-400 to-emerald-400 transition-all duration-1000" style="width: ${percentage}%"></div>
+          </div>
+          <div class="flex justify-between text-[10px] text-slate-400">
+            <span>$0 Start</span>
+            <span class="text-amber-400 font-bold">$${remaining} remaining until redemption!</span>
+            <span>$${childState.goals.cost} Target</span>
+          </div>
+        </div>
+
+        <!-- Motivation Banner -->
+        <div class="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-start gap-2.5">
+          <span class="text-md">💡</span>
+          <p class="text-xs text-emerald-300 font-semibold leading-relaxed">${quote}</p>
+        </div>
+
+        <!-- Log Activity feed -->
+        <div class="space-y-2">
+          <h3 class="text-xs font-bold text-slate-400 tracking-wider">RECENT ACCOMPLISHMENTS</h3>
+          <div class="space-y-1.5">
+            ${childState.logs.map(log => `
+              <div class="p-3 bg-white/5 border border-white/5 rounded-xl flex justify-between items-center">
+                <div class="space-y-0.5">
+                  <div class="text-xs font-bold text-slate-200">${log.description}</div>
+                  <div class="text-[9px] text-slate-500">${log.date}</div>
+                </div>
+                <span class="text-xs font-extrabold text-emerald-400 font-mono">+$${log.gained}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function openSpotifyWrapped() {
+  const totalGained = childState.logs.reduce((sum, item) => sum + (item.gained || 0), 0);
+  const totalLost = childState.logs.reduce((sum, item) => sum + (item.lost || 0), 0);
+  
+  const badgesContainer = document.getElementById('wrapped-badges');
+  if (badgesContainer) {
+    badgesContainer.innerHTML = '';
+    const earnedBadges = ['Kindness Queen 👑', 'Chore Champion 🧹', 'Academic Ace 🎓'];
+    earnedBadges.forEach(b => {
+      badgesContainer.innerHTML += `
+        <span class="px-2 py-0.5 text-[9px] font-extrabold bg-blue-500/20 text-blue-300 rounded-lg border border-blue-500/30">${b}</span>
+      `;
+    });
+  }
+
+  document.getElementById('wrapped-gained').textContent = `+$${totalGained}`;
+  document.getElementById('wrapped-lost').textContent = `-$${totalLost}`;
+
+  const modal = document.getElementById('wrapped-modal');
+  const box = document.getElementById('wrapped-modal-box');
+  if (modal && box) {
+    modal.classList.remove('opacity-0', 'pointer-events-none');
+    box.classList.remove('scale-95');
+  }
+}
+
+function closeWrappedModal() {
+  const modal = document.getElementById('wrapped-modal');
+  const box = document.getElementById('wrapped-modal-box');
+  if (modal && box) {
+    modal.classList.add('opacity-0', 'pointer-events-none');
+    box.classList.add('scale-95');
+  }
+}
+
+/* ── TASKBAR / WINDOW MANAGER (Windows-style multitasking) ── */
+const WM = {
+  windows: new Map(),
+  zCounter: 60,
+  focusedId: null,
+
+  create(id, title, icon, width, height, fillFn) {
+    if (this.windows.has(id)) {
+      const w = this.windows.get(id);
+      if (w.el.style.display === 'none') {
+        w.el.style.display = 'flex';
+        w.el.classList.add('winOpen');
+      }
+      this.focus(id);
+      return w;
+    }
+
+    const desktop = document.getElementById('desktop');
+    const dW = desktop.offsetWidth, dH = desktop.offsetHeight;
+    const left = Math.max(10, (dW - width) / 2);
+    const top = Math.max(10, Math.min((dH - height) / 2, dH - height - 10));
+
+    const el = document.createElement('div');
+    el.className = 'os-window glass-panel';
+    el.id = `win_${id}`;
+    el.style.cssText = `width:${width}px;height:${height}px;left:${left}px;top:${top}px;z-index:${++this.zCounter};`;
+
+    const bar = document.createElement('div');
+    bar.className = 'win-bar';
+    bar.innerHTML = `
+      <div class="win-controls">
+        <div class="wc wc-close" title="Close"></div>
+        <div class="wc wc-min" title="Minimize"></div>
+        <div class="wc wc-max" title="Maximize"></div>
+      </div>
+      <div class="win-title">${icon || ''} ${title}</div>
+    `;
+
+    const body = document.createElement('div');
+    body.className = 'win-body';
+
+    const resizeHandle = document.createElement('div');
+    resizeHandle.className = 'win-resize-handle';
+
+    el.appendChild(bar);
+    el.appendChild(body);
+    el.appendChild(resizeHandle);
+    desktop.appendChild(el);
+
+    const w = { id, el, body, bar, title, icon: icon || '📱', state: 'open', prevGeom: null };
+    this.windows.set(id, w);
+    fillFn(body);
+
+    // Event Bindings
+    bar.querySelector('.wc-close').onclick = (e) => { e.stopPropagation(); this.close(id); };
+    bar.querySelector('.wc-min').onclick = (e) => { e.stopPropagation(); this.minimize(id); };
+    bar.querySelector('.wc-max').onclick = (e) => { e.stopPropagation(); this.toggleMax(id); };
+
+    this._makeDraggable(el, bar, w);
+    this._makeResizable(el, resizeHandle, w);
+
+    el.addEventListener('mousedown', () => this.focus(id), true);
+    this.focus(id);
+    buildDesktopDock();
+    return w;
+  },
+
+  focus(id) {
+    const w = this.windows.get(id);
+    if (!w) return;
+    document.querySelectorAll('.os-window').forEach(el => el.classList.remove('focused'));
+    w.el.classList.add('focused');
+    w.el.style.zIndex = ++this.zCounter;
+    this.focusedId = id;
+    const sbTitle = document.getElementById('sb-active-title');
+    if (sbTitle) sbTitle.textContent = w.title;
+  },
+
+  close(id) {
+    const w = this.windows.get(id);
+    if (!w) return;
+    w.el.classList.add('anim-close');
+    w.el.querySelectorAll('iframe').forEach(f => f.src = 'about:blank');
+    setTimeout(() => {
+      w.el.remove();
+      this.windows.delete(id);
+      buildDesktopDock();
+    }, 200);
+  },
+
+  minimize(id) {
+    const w = this.windows.get(id);
+    if (!w) return;
+    w.el.style.display = 'none';
+  },
+
+  toggleMax(id) {
+    const w = this.windows.get(id);
+    if (!w) return;
+    if (w.state !== 'maximized') {
+      w.prevGeom = { left: w.el.style.left, top: w.el.style.top, width: w.el.style.width, height: w.el.style.height };
+      w.state = 'maximized';
+      const d = document.getElementById('desktop');
+      Object.assign(w.el.style, { left: '0', top: '0', width: d.offsetWidth + 'px', height: d.offsetHeight + 'px', borderRadius: '0' });
+    } else {
+      w.state = 'open';
+      const g = w.prevGeom || {};
+      Object.assign(w.el.style, { left: g.left || '40px', top: g.top || '40px', width: g.width || '700px', height: g.height || '480px', borderRadius: '' });
+    }
+  },
+
+  _makeDraggable(el, handle, w) {
+    let drag = false, ox, oy, sx, sy;
+    const start = (x, y) => {
+      if (w.state === 'maximized') return;
+      drag = true;
+      ox = parseInt(el.style.left) || 0;
+      oy = parseInt(el.style.top) || 0;
+      sx = x;
+      sy = y;
+    };
+    const move = (x, y) => {
+      if (!drag) return;
+      const d = document.getElementById('desktop');
+      el.style.left = Math.max(0, Math.min(d.offsetWidth - 80, ox + (x - sx))) + 'px';
+      el.style.top = Math.max(0, Math.min(d.offsetHeight - 40, oy + (y - sy))) + 'px';
+    };
+    const end = () => drag = false;
+
+    handle.addEventListener('mousedown', e => { e.preventDefault(); start(e.clientX, e.clientY); });
+    document.addEventListener('mousemove', e => move(e.clientX, e.clientY));
+    document.addEventListener('mouseup', end);
+  },
+
+  _makeResizable(el, handle, w) {
+    let r = false, sx, sy, sw, sh;
+    handle.addEventListener('mousedown', e => {
+      if (w.state === 'maximized') return;
+      r = true;
+      e.preventDefault();
+      e.stopPropagation();
+      sx = e.clientX;
+      sy = e.clientY;
+      sw = el.offsetWidth;
+      sh = el.offsetHeight;
+    });
+    document.addEventListener('mousemove', e => {
+      if (!r) return;
+      el.style.width = Math.max(300, sw + (e.clientX - sx)) + 'px';
+      el.style.height = Math.max(200, sh + (e.clientY - sy)) + 'px';
+    });
+    document.addEventListener('mouseup', () => r = false);
+  }
+};
+
+/* ── START MENU DRAWER ── */
+let _smOpen = false;
+function toggleStartMenu(force) {
+  _smOpen = force !== undefined ? force : !_smOpen;
+  document.getElementById('start-menu')?.classList.toggle('hidden', !_smOpen);
+}
+function closeStartMenuIfOpen() {
+  if (_smOpen) toggleStartMenu(false);
+}
+
+function buildStartMenu() {
+  const grid = document.getElementById('sm-app-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  
+  const apps = getVisibleApps();
+  apps.forEach(app => {
+    const div = document.createElement('div');
+    div.className = 'p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all text-center cursor-pointer flex flex-col items-center gap-1.5';
+    div.innerHTML = `<span class="text-xl">${app.icon || '📱'}</span><span class="text-[10px] font-bold tracking-wider truncate w-full text-slate-300">${app.label}</span>`;
+    div.onclick = () => {
+      openApp(app.id);
+      toggleStartMenu(false);
+    };
+    grid.appendChild(div);
+  });
+}
+
+/* ── SETTINGS UTILITY ── */
+function buildSettingsApp(body) {
+  body.style.overflow = 'hidden';
+  body.style.padding = '0';
+  
+  body.innerHTML = `
+    <div class="h-full flex" style="font-family:'Rajdhani', sans-serif; background:#020712; color:#f8fafc;">
+      <!-- Sidebar navigation -->
+      <div class="w-48 border-r border-white/10 p-4 space-y-2 bg-white/5">
+        <div class="settings-sidebar-item active" onclick="switchSettingsSection('display')">
+          <i data-lucide="monitor" class="w-4 h-4"></i> Display Theme
+        </div>
+        <div class="settings-sidebar-item" onclick="switchSettingsSection('wallpapers')">
+          <i data-lucide="image" class="w-4 h-4"></i> Wallpapers
+        </div>
+        <div class="settings-sidebar-item" onclick="switchSettingsSection('audio')">
+          <i data-lucide="volume-2" class="w-4 h-4"></i> Audio & OST
+        </div>
+      </div>
+
+      <!-- Main Config Pane -->
+      <div class="flex-1 p-6 overflow-y-auto space-y-6" id="settings-pane-content">
+        <!-- Display Theme Config -->
+        <div class="space-y-4">
+          <h2 class="text-sm font-bold text-blue-400 tracking-wider uppercase">Displays & Themes</h2>
+          <p class="text-xs text-slate-400 leading-relaxed">Choose a default theme framework or configure layout presets.</p>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="p-4 rounded-2xl bg-white/5 border border-white/5 cursor-pointer hover:border-blue-500 transition-colors" onclick="applyTheme('fusion')">
+              <h3 class="text-xs font-bold text-slate-200">Fusion Preset</h3>
+              <p class="text-[10px] text-slate-400 mt-1">Balanced 50% Apple Classic & 50% Windows style.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-white/5 border border-white/5 cursor-pointer hover:border-blue-500 transition-colors" onclick="applyTheme('glass')">
+              <h3 class="text-xs font-bold text-slate-200">Liquid Glass</h3>
+              <p class="text-[10px] text-slate-400 mt-1">Stunning VisionOS frosted layers with dynamic reflections.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-white/5 border border-white/5 cursor-pointer hover:border-blue-500 transition-colors" onclick="applyTheme('fluent')">
+              <h3 class="text-xs font-bold text-slate-200">Windows Fluent</h3>
+              <p class="text-[10px] text-slate-400 mt-1">Mica background and productivity layout.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-white/5 border border-white/5 cursor-pointer hover:border-blue-500 transition-colors" onclick="applyTheme('apple')">
+              <h3 class="text-xs font-bold text-slate-200">Apple Classic</h3>
+              <p class="text-[10px] text-slate-400 mt-1">Frosted glass windows & centered navigation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  lucide.createIcons();
+}
+
+function switchSettingsSection(section) {
+  const container = document.getElementById('settings-pane-content');
+  if (!container) return;
+  
+  if (section === 'wallpapers') {
+    container.innerHTML = `
+      <div class="space-y-4">
+        <h2 class="text-sm font-bold text-blue-400 tracking-wider uppercase">Desktop Wallpapers</h2>
+        <div class="grid grid-cols-3 gap-3">
+          <button class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-blue-500 text-xs font-bold" onclick="applyWallpaper('wp-grid')">GRID</button>
+          <button class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-blue-500 text-xs font-bold" onclick="applyWallpaper('wp-stadium')">STADIUM</button>
+          <button class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-blue-500 text-xs font-bold" onclick="applyWallpaper('wp-gradient')">GRADIENT</button>
+        </div>
+        <button class="w-full py-2.5 bg-blue-600 rounded-xl text-xs font-bold text-white tracking-wider hover:brightness-110 active:scale-95 transition-all" onclick="document.getElementById('wp-file-input').click()">UPLOAD CUSTOM IMAGE</button>
+      </div>
+    `;
+  } else if (section === 'audio') {
+    container.innerHTML = `
+      <div class="space-y-4">
+        <h2 class="text-sm font-bold text-blue-400 tracking-wider uppercase">Audio & System OST</h2>
+        <p class="text-xs text-slate-400 leading-relaxed">Choose an ambient theme for your workspace or adjust output volume levels.</p>
+        <div class="flex gap-2">
+          <button class="px-4 py-2 rounded-xl bg-white/5 border border-white/5 hover:border-blue-500 text-xs font-bold" onclick="selectOSTTrack('ambient')">AMBIENT</button>
+          <button class="px-4 py-2 rounded-xl bg-white/5 border border-white/5 hover:border-blue-500 text-xs font-bold" onclick="selectOSTTrack('battle')">BATTLE</button>
+          <button class="px-4 py-2 rounded-xl bg-white/5 border border-white/5 hover:border-blue-500 text-xs font-bold" onclick="selectOSTTrack('calm')">CALM</button>
+        </div>
+        <div class="space-y-1.5 pt-4">
+          <label class="block text-[10px] font-bold text-slate-500 uppercase">Volume Master</label>
+          <input type="range" class="w-full accent-blue-500 bg-white/10 rounded-lg h-2" min="0" max="1" step="0.05" value="${OS.volume}" oninput="setVolume(this.value)">
+        </div>
+      </div>
+    `;
+  } else {
+    // default/display
+    buildSettingsApp(container.parentElement);
+  }
+}
+
+function applyWallpaper(wp, url = null) {
+  const bg = document.getElementById('bg-layer');
+  if (!bg) return;
+  bg.className = '';
+  if (wp === 'wp-custom' && url) {
+    bg.style.backgroundImage = `url("${url}")`;
+  } else {
+    bg.classList.add(wp);
+    bg.style.backgroundImage = '';
+  }
+  OS.wallpaper = wp;
+  LS.set('tob_wallpaper', wp);
+}
+
+function handleWallpaperUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    OS.wpCustom = e.target.result;
+    LS.set('tob_wp_custom', e.target.result);
+    applyWallpaper('wp-custom', e.target.result);
+    toast("Background modified successfully!");
+  };
+  reader.readAsDataURL(file);
+}
+
+function selectOSTTrack(track) {
+  OS.track = track;
+  LS.set('tob_track', track);
+  toast(`Synth engine track: ${track.toUpperCase()}`);
+}
+
+function setVolume(v) {
+  OS.volume = parseFloat(v);
+  LS.set('tob_volume', v);
+}
+
+// --- DOCK ITEMS POPULATION & VISIBILITY DRAWER ---
+function openApp(id) {
+  switch (id) {
+    case 'calc':
+      WM.create('calc', 'Calculator', '🧮', 320, 480, buildCalculatorApp);
+      break;
+    case 'music':
+      WM.create('music', 'Music Player', '🎵', 860, 560, buildMusicApp);
+      break;
+    case 'video':
+      WM.create('video', 'TobTube', '📺', 860, 580, buildTobTubeApp);
+      break;
+    case 'taskmgr':
+      WM.create('taskmgr', 'Task Manager', '📊', 640, 480, buildTaskMgrApp);
+      break;
+    case 'mods':
+      WM.create('mods', 'Mod Manager', '🔧', 560, 480, buildModApp);
+      break;
+    case 'finder':
+      openFinder();
+      break;
+    case 'settings':
+      WM.create('settings', 'Settings', '⚙️', 720, 520, buildSettingsApp);
+      break;
+    case 'reward_portal':
+      WM.create('reward_portal', 'My Progress', '⚜', 620, 500, buildChildProgressApp);
+      break;
+    case 'rhythmforge':
+      WM.create('rhythmforge', 'RhythmForge', '🎵', 920, 600, buildRhythmForgeApp);
+      break;
+    case 'browser':
+      WM.create('browser', 'TOB Browser', '🌐', 1080, 700, buildBrowserApp);
+      break;
+    case 'battlegrounds':
+      WM.create('battlegrounds', 'Abil Battlegrounds', '⚔️', 1100, 700, buildBattlegroundsApp);
+      break;
+    case 'adventure':
+      WM.create('adventure', 'Abil Chronicle', '📖', 980, 680, buildAdventureApp);
+      break;
+    default:
+      toast(`App framework not resolved: ${id}`);
+  }
+}
+
+// --- DYNAMIC ISLAND AI INTEGRATION (LIVE GEMINI 2.5 FLASH API!) ---
+const TOB_IslandAI = {
+  expanded: false,
+  conversationHistory: [],
+  systemPrompt: "You are TOB, the next-generation operating assistant of TOB OS. Keep replies friendly, concise (under 3 sentences), and do not use markdown.",
+
+  toggleExpansion(event) {
+    if (event) event.stopPropagation();
+    const container = document.getElementById('dynamic-island-container');
+    const wrapper = document.querySelector('.island-chat-wrapper');
+    const minView = document.getElementById('island-minimal-view');
+    
+    if (!this.expanded) {
+      container.classList.add('expanded');
+      wrapper.classList.remove('hidden');
+      minView.classList.add('hidden');
+      this.expanded = true;
+      
+      // Seed first helpful instruction if chat is blank
+      const log = document.getElementById('island-chat-log');
+      if (log && log.children.length === 0) {
+        this.addMessage('tob', "Good day, user. I am your TOB AI Cognitive core. Ask me anything about layout parameters or type command prompts (e.g., 'open music').");
+      }
+    } else {
+      container.classList.remove('expanded');
+      wrapper.classList.add('hidden');
+      minView.classList.remove('hidden');
+      this.expanded = false;
+    }
+  },
+
+  addMessage(role, text) {
+    const log = document.getElementById('island-chat-log');
+    if (!log) return;
+    const msg = document.createElement('div');
+    msg.className = `island-msg ${role}`;
+    msg.innerHTML = text;
+    log.appendChild(msg);
+    log.scrollTop = log.scrollHeight;
+  },
+
+  async send() {
+    const input = document.getElementById('island-chat-input');
+    if (!input || !input.value.trim()) return;
+    
+    const query = input.value.trim();
+    this.addMessage('user', query);
+    input.value = '';
+
+    // Check for quick matching offline commands first
+    if (this.handleLocalCommands(query)) return;
+
+    this.addMessage('tob', '<span class="animate-pulse">Thinking...</span>');
+    const log = document.getElementById('island-chat-log');
+    const loaderMsg = log.lastElementChild;
+
+    // Connect to live Gemini 2.5 Flash API!
+    try {
+      const apiKey = ""; // Canvas injection will provide the key
+      const payload = {
+        contents: [{ parts: [{ text: query }] }],
+        systemInstruction: { parts: [{ text: this.systemPrompt }] }
+      };
+
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error("API call error");
+      const result = await res.json();
+      const responseText = result.candidates?.[0]?.content?.parts?.[0]?.text || "No response received.";
+      
+      if (loaderMsg) loaderMsg.remove();
+      this.addMessage('tob', responseText);
+    } catch (err) {
+      if (loaderMsg) loaderMsg.remove();
+      this.addMessage('tob', "Offline fallback: Launching local command dispatcher instead.");
+    }
+  },
+
+  handleLocalCommands(query) {
+    const text = query.toLowerCase().trim();
+    if (text.includes("open") || text.includes("launch")) {
+      let target = '';
+      if (text.includes("music") || text.includes("player")) target = 'music';
+      else if (text.includes("video") || text.includes("tube")) target = 'video';
+      else if (text.includes("progress") || text.includes("reward")) target = 'reward_portal';
+      else if (text.includes("settings") || text.includes("control")) target = 'settings';
+      
+      if (target) {
+        openApp(target);
+        this.addMessage('tob', `Launching the matching workspace: <b>${target.toUpperCase()}</b>.`);
+        return true;
+      }
+    }
+    return false;
+  }
+};
+
+// --- INITIALIZE BOOT & PERSISTENCE STACKS ---
+function boot() {
+  buildDesktopDock();
+  buildStartMenu();
+  
+  // Custom workspace icon grids
+  const grid = document.getElementById('icon-grid');
+  if (grid) {
+    const apps = getVisibleApps();
+    apps.forEach(app => {
+      const el = document.createElement('div');
+      el.className = 'p-3 flex flex-col items-center gap-1.5 cursor-pointer select-none pointer-events-auto hover:scale-105 transition-all text-center';
+      el.style.width = '76px';
+      el.innerHTML = `
+        <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-2xl shadow-lg">${app.icon || '📱'}</div>
+        <span class="text-[10px] font-semibold text-slate-300 truncate w-full tracking-wider">${app.label}</span>
+      `;
+      el.onclick = () => openApp(app.id);
+      grid.appendChild(el);
+    });
+  }
+}
+
+window.onload = function() {
+  boot();
+};
+
+/* ── BOOKMARKS & VIRTUAL DIRECTORY STORAGE (VFS) ── */
+var VFS = {
+  get() { return LS.get('tob_vfs', {'/Desktop':[], '/Documents':[], '/Downloads':[], '/Music':[], '/Pictures':[], '/Mods':[]}); },
+  save(fs) { LS.set('tob_vfs', fs); },
+  addFile(folder, file) { const fs=this.get(); if(!fs[folder]) fs[folder]=[]; fs[folder].push(file); this.save(fs); }
+};
+
+</script>
+
+</body>
+</html>

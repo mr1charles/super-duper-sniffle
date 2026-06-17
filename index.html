@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOB OS — v16.0 THEMES, GAMES &amp; RHYTHM EDITION</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- BOOT -->
+<div id="boot">
+  <canvas id="boot-canvas"></canvas>
+  <div class="boot-overlay">
+    <div class="boot-logo">TOB OS</div>
+    <div class="boot-sub">THEMES, GAMES &amp; RHYTHM EDITION v16.0</div>
+    <div class="boot-bar-wrap"><div class="boot-bar"></div></div>
+    <div class="boot-msg" id="boot-msg">INITIALIZING CORE...</div>
+  </div>
+</div>
+
+<div class="amb-ring" style="width:700px;height:700px;left:50%;top:50%;"></div>
+<div class="amb-ring" style="width:1100px;height:1100px;left:50%;top:50%;animation-delay:-5s;animation-duration:13s;"></div>
+
+<div id="bg-layer" class="wp-grid"></div>
+<canvas id="particle-canvas"></canvas>
+<div id="scanlines"></div>
+<div id="toast"></div>
+
+<!-- STATUS BAR -->
+<div id="statusbar">
+  <div class="sb-group">
+    <div class="sb-dot"></div>
+    <span style="font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;color:var(--neon);letter-spacing:3px;">TOB OS</span>
+    <span id="sb-active-title">DESKTOP</span>
+  </div>
+  
+  <!-- DYNAMIC NOTCH -->
+  <div id="dynamic-notch" onclick="notchSystem.toggle(event)">
+    <div id="notch-idle"><div class="notch-dot"></div></div>
+    <div id="notch-expanded"></div>
+  </div>
+
+  <div class="sb-group">
+    <div id="sb-battery">
+      <div class="bat-icon"><div class="bat-fill" id="bat-fill" style="width:70%"></div></div>
+      <span id="bat-pct">—%</span>
+      <span id="bat-charge" style="display:none">⚡</span>
+    </div>
+    <span id="sb-ver-badge" class="ok" title="Version Info">v6.0</span>
+    <span id="sb-clock">00:00</span>
+  </div>
+</div>
+
+<!-- DESKTOP -->
+<div id="desktop">
+  <div class="home-watermark">TOB OS</div>
+  <div id="icon-grid"></div>
+  <div id="delete-hint" style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(255,59,48,.85);color:#fff;padding:4px 16px;border-radius:20px;font-size:10px;font-family:'Share Tech Mono',monospace;display:none;z-index:30;backdrop-filter:blur(8px);">
+    ✕ TAP APPS TO HIDE — TAP ELSEWHERE TO EXIT
+  </div>
+</div>
+
+<!-- DESKTOP CONTEXT MENU -->
+<div id="desktop-ctx"></div>
+
+<!-- pets removed -->
+
+<!-- LOCK SCREEN -->
+<div id="lock-screen" onclick="unlockScreen()">
+  <div class="lock-time" id="lock-clock">00:00</div>
+  <div class="lock-date" id="lock-date">MONDAY · MARCH · 2026</div>
+  <div class="lock-logo">TOB OS</div>
+  <div class="lock-hint">◈ CLICK TO UNLOCK ◈</div>
+</div>
+
+<!-- TASKBAR -->
+<div id="taskbar">
+  <button id="taskbar-start" onclick="toggleStartMenu()" title="Start Menu">⬡</button>
+  <div id="tb-sep"></div>
+  <div id="tb-apps"></div>
+  <div id="tb-right">
+    <button class="tb-music-btn" id="tb-play-btn" onclick="toggleMusic()">▶</button>
+    <span id="tb-np">— TOB OS —</span>
+    <span id="tb-clock">00:00</span>
+  </div>
+</div>
+
+<!-- START MENU -->
+<div id="start-menu">
+  <div class="sm-title">◈ ALL APPS</div>
+  <div class="sm-grid" id="sm-app-grid"></div>
+  <div class="sm-sep"></div>
+  <div class="sm-actions">
+    <button class="sm-action" onclick="openApp('settings');toggleStartMenu(false)">⚙ Settings</button>
+    <button class="sm-action" onclick="toggleStartMenu(false);applyTheme(OS.theme==='dark'?'light':'dark')">☀ Theme</button>
+  </div>
+</div>
+
+<!-- APP CREATOR MODAL -->
+<div class="modal-backdrop" id="ac-modal">
+  <div class="modal-dialog" style="width:min(400px,92vw)">
+    <div class="modal-title">◈ CREATE APP</div>
+    <div class="modal-field">
+      <label class="modal-label">APP NAME</label>
+      <input class="modal-input" id="ac-name" type="text" placeholder="My App..." maxlength="20">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">ICON EMOJI</label>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <div id="ac-icon-preview" style="width:48px;height:48px;border-radius:12px;border:1.5px solid var(--panel-border);background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📱</div>
+        <input class="modal-input" id="ac-emoji" type="text" placeholder="Emoji e.g. 🚀" maxlength="4" oninput="updateIconPreview()">
+      </div>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">CONTENT TYPE</label>
+      <select class="modal-select" id="ac-type" onchange="updateCreatorType()">
+        <option value="url">URL / External Page</option>
+        <option value="html">Custom HTML</option>
+      </select>
+    </div>
+    <div class="modal-field" id="ac-url-field">
+      <label class="modal-label">URL</label>
+      <input class="modal-input" id="ac-url" type="text" placeholder="https://...">
+    </div>
+    <div class="modal-field" id="ac-html-field" style="display:none">
+      <label class="modal-label">HTML CONTENT</label>
+      <textarea class="modal-textarea" id="ac-html" placeholder="<h1>Hello!</h1>"></textarea>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">WINDOW SIZE</label>
+      <select class="modal-select" id="ac-size">
+        <option value="md">Medium (700×480)</option>
+        <option value="lg">Large (900×580)</option>
+        <option value="sm">Small (480×360)</option>
+      </select>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('ac-modal')">✕ CANCEL</button>
+      <button class="modal-btn modal-btn-primary" onclick="saveCustomApp()">✦ CREATE</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN KEY MODAL -->
+<div class="modal-backdrop" id="admin-key-modal">
+  <div class="modal-dialog" style="width:min(340px,90vw)">
+    <div class="modal-title" style="color:var(--accent)">🔐 ADMIN ACCESS</div>
+    <div style="font-size:12px;color:var(--text-dim);font-family:'Share Tech Mono',monospace;margin-bottom:14px;text-align:center;">Enter admin key to unlock the Admin Panel</div>
+    <div class="modal-field">
+      <input class="modal-input" id="admin-key-input" type="password" placeholder="Enter admin.key..." maxlength="32">
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('admin-key-modal')">CANCEL</button>
+      <button class="modal-btn" style="background:linear-gradient(135deg,#440022,#ff2d6e);" onclick="checkAdminKey()">🔓 UNLOCK</button>
+    </div>
+    <div style="text-align:center;margin-top:8px;font-size:9px;color:var(--text-muted);font-family:'Share Tech Mono',monospace;">Hint: try "TOBOS-ADMIN-2025"</div>
+  </div>
+</div>
+
+<!-- VERSION MODAL -->
+<div class="modal-backdrop" id="ver-modal">
+  <div class="modal-dialog" style="width:min(340px,90vw)">
+    <div class="modal-title" id="ver-modal-title">◈ VERSION INFO</div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);line-height:2;text-align:center;" id="ver-modal-body"></div>
+    <div class="modal-btns" style="margin-top:14px">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('ver-modal')">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<!-- HIDDEN INPUTS -->
+<input type="file" id="wp-file-input" accept="image/*" style="display:none" onchange="handleWallpaperUpload(event)">
+<input type="file" id="mod-file-input" accept=".json" style="display:none" onchange="handleModInstall(event)">
+<input type="file" id="admin-key-file" accept=".key" style="display:none" onchange="handleAdminKeyFile(event)">
+<audio id="audio-el" style="display:none"></audio>
+<input type="file" id="finder-file-input" multiple style="display:none" onchange="finderHandleUpload(event)">
+
+<script src="js/os-core.js"></script>
+<script src="js/tob-ai.js"></script>
+<script src="js/tob-memory.js"></script>
+
+</body>
+</html>

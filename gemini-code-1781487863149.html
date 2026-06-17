@@ -1,0 +1,158 @@
+<div id="tob-avatar-container" style="position: fixed; bottom: 60px; right: 20px; width: 110px; height: 140px; z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(2, 10, 24, 0.8); border: 1px solid var(--panel-border); border-radius: 16px; backdrop-filter: blur(10px); padding: 8px;">
+  <canvas id="tob-avatar-canvas" width="80" height="80" style="width: 80px; height: 80px;"></canvas>
+  <div id="tob-avatar-caption" style="font-family: 'Share Tech Mono', monospace; font-size: 9px; color: var(--neon); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;">TOB: IDLE</div>
+</div>
+
+<style>
+  #tob-avatar-container {
+    box-shadow: var(--glow-sm);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #tob-avatar-container:hover {
+    transform: scale(1.05);
+    border-color: var(--neon);
+    box-shadow: var(--glow-lg);
+  }
+</style>
+
+<script>
+const TOB_Avatar = {
+  canvas: null, ctx: null,
+  expression: 'idle', isSpeaking: false,
+  frame: 0, animationLoopId: null,
+
+  init() {
+    this.canvas = document.getElementById("tob-avatar-canvas");
+    if(!this.canvas) return;
+    this.ctx = this.canvas.getContext("2d");
+    this.animate();
+  },
+
+  setExpression(expr) {
+    this.expression = expr;
+    document.getElementById("tob-avatar-caption").innerText = `TOB: ${expr}`;
+  },
+
+  startSpeaking() { this.isSpeaking = true; },
+  stopSpeaking() { this.isSpeaking = false; },
+
+  animate() {
+    this.frame++;
+    this.draw();
+    this.animationLoopId = requestAnimationFrame(() => this.animate());
+  },
+
+  draw() {
+    const ctx = this.ctx;
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const cx = w / 2;
+    const cy = h / 2;
+
+    // Outer Floating Matrix Energy Ring Ring
+    ctx.strokeStyle = "rgba(0, 180, 255, 0.15)";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 36 + Math.sin(this.frame * 0.05) * 2, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Body/Core Core Sphere Frame Base
+    let coreGlow = ctx.createRadialGradient(cx, cy, 5, cx, cy, 30);
+    coreGlow.addColorStop(0, "#051a3a");
+    coreGlow.addColorStop(1, "#020914");
+    ctx.fillStyle = coreGlow;
+    ctx.strokeStyle = "var(--neon)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(cx, cy - 4, 28, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    // Expression Vector Computations
+    let eyeY = cy - 8;
+    let eyeSpacing = 10;
+    let eyeSize = 4;
+    let mouthY = cy + 6;
+    let mouthWidth = 12;
+    let mouthOpenness = this.isSpeaking ? Math.abs(Math.sin(this.frame * 0.25)) * 6 : 1;
+
+    ctx.fillStyle = "var(--neon3)";
+    if (this.expression === 'excited') ctx.fillStyle = "var(--gold)";
+    if (this.expression === 'confused') ctx.fillStyle = "var(--accent)";
+
+    // Vector state transitions
+    switch(this.expression) {
+      case 'happy':
+        // Arch shaped eyes
+        ctx.strokeStyle = ctx.fillStyle;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.arc(cx - eyeSpacing, eyeY, 3, Math.PI, 0); ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx + eyeSpacing, eyeY, 3, Math.PI, 0); ctx.stroke();
+        // Smile mouth
+        ctx.beginPath(); ctx.arc(cx, mouthY, 5, 0, Math.PI); ctx.stroke();
+        break;
+
+      case 'thinking':
+        // Shifted eye matrices
+        ctx.beginPath(); ctx.arc(cx - eyeSpacing + 2, eyeY - 2, eyeSize, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(cx + eyeSpacing + 2, eyeY - 2, eyeSize, 0, Math.PI*2); ctx.fill();
+        // Straight tiny line mouth
+        ctx.strokeStyle = ctx.fillStyle;
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(cx - 4, mouthY); ctx.lineTo(cx + 4, mouthY); ctx.stroke();
+        break;
+
+      case 'confused':
+        // Asymmetric micro sizes
+        ctx.beginPath(); ctx.arc(cx - eyeSpacing, eyeY, eyeSize + 1, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(cx + eyeSpacing, eyeY, eyeSize - 1, 0, Math.PI*2); ctx.fill();
+        // Squiggle mouth loop
+        ctx.strokeStyle = ctx.fillStyle;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(cx - 6, mouthY);
+        ctx.bezierCurveTo(cx - 3, mouthY - 3, cx + 3, mouthY + 3, cx + 6, mouthY);
+        ctx.stroke();
+        break;
+
+      case 'sleeping':
+        ctx.strokeStyle = "rgba(0, 180, 255, 0.4)";
+        ctx.lineWidth = 2;
+        // Flat horizontal line matrices
+        ctx.beginPath(); ctx.moveTo(cx - eyeSpacing - 3, eyeY); ctx.lineTo(cx - eyeSpacing + 3, eyeY); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx + eyeSpacing - 3, eyeY); ctx.lineTo(cx + eyeSpacing + 3, eyeY); ctx.stroke();
+        // Small oval mouth
+        ctx.beginPath(); ctx.arc(cx, mouthY, 2, 0, Math.PI*2); ctx.stroke();
+        break;
+
+      case 'focused':
+        // Narrow data points
+        ctx.fillRect(cx - eyeSpacing - 3, eyeY - 1, 6, 2);
+        ctx.fillRect(cx + eyeSpacing - 3, eyeY - 1, 6, 2);
+        // Clean micro box mouth
+        ctx.strokeRect(cx - 4, mouthY, 8, 2);
+        break;
+
+      default: // Idle execution mapping
+        let blink = (this.frame % 180 < 10);
+        if (!blink) {
+          ctx.beginPath(); ctx.arc(cx - eyeSpacing + Math.sin(this.frame*0.01)*1, eyeY, eyeSize, 0, Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.arc(cx + eyeSpacing + Math.sin(this.frame*0.01)*1, eyeY, eyeSize, 0, Math.PI*2); ctx.fill();
+        }
+        // Basic line array or mouth cavity logic
+        ctx.strokeStyle = ctx.fillStyle;
+        ctx.lineWidth = 2;
+        if(this.isSpeaking) {
+          ctx.strokeRect(cx - (mouthWidth/2), mouthY - (mouthOpenness/2), mouthWidth, mouthOpenness);
+        } else {
+          ctx.beginPath(); ctx.moveTo(cx - 5, mouthY); ctx.lineTo(cx + 5, mouthY); ctx.stroke();
+        }
+        break;
+    }
+  }
+};
+// Mount components seamlessly on workspace initialization
+setTimeout(() => TOB_Avatar.init(), 1000);
+</script>
