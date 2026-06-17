@@ -2524,7 +2524,7 @@ const LS={
   set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}},
 };
 const OS={
-  theme:LS.get('tob_theme','dark'),wallpaper:LS.get('tob_wallpaper','wp-grid'),
+  theme:LS.get('tob_theme','fusion'),wallpaper:LS.get('tob_wallpaper','wp-grid'),
   wpCustom:LS.get('tob_wp_custom',null),track:LS.get('tob_track','ambient'),
   volume:LS.get('tob_volume',0.5),customApps:LS.get('tob_apps',[]),
   hiddenApps:LS.get('tob_hidden',[]),gridSlots:LS.get('tob_grid',{}),
@@ -2533,7 +2533,16 @@ const OS={
 let _deleteMode=false;
 
 /* ══ 2. THEME ══ */
-function applyTheme(t){OS.theme=t;document.documentElement.setAttribute('data-theme',t);LS.set('tob_theme',t);toast(t==='dark'?'◈ Dark Mode':'☀ Light Mode');}
+function applyTheme(t){
+  const premiumThemes=['liquid-glass','fluent','apple','fusion'];
+  OS.theme=t||'fusion';
+  document.documentElement.setAttribute('data-theme', (OS.theme==='light')?'light':'dark');
+  if(premiumThemes.includes(OS.theme)) document.documentElement.setAttribute('data-theme-id',OS.theme);
+  else if(OS.theme==='dark'||OS.theme==='light') document.documentElement.setAttribute('data-theme-id',OS.theme==='light'?'fluent':'fusion');
+  LS.set('tob_theme',OS.theme);
+  const names={'liquid-glass':'Liquid Glass','fluent':'Fluent','apple':'Apple','fusion':'Fusion','dark':'Fusion Dark','light':'Fluent Light'};
+  toast('✦ '+(names[OS.theme]||OS.theme)+' theme active');
+}
 function applyWallpaper(cls,url=null){
   const bg=document.getElementById('bg-layer');
   [...bg.classList].filter(c=>c.startsWith('wp-')).forEach(c=>bg.classList.remove(c));
@@ -3103,7 +3112,7 @@ function toggleMusic(){
     _ostPlaying=true;
     if(_audioCtx&&_audioCtx.state==='suspended')_audioCtx.resume();
     playOST(OS.track);
-    
+
   }
   _updateMusicBtns();
 }
@@ -3746,8 +3755,16 @@ function openSettings(){
       const perfData={memory:Math.round(performance.memory?.usedJSHeapSize/1048576)||'N/A',total:Math.round(performance.memory?.totalJSHeapSize/1048576)||'N/A'};
       root.innerHTML=`<div class="set-title">◈ SYSTEM SETTINGS</div>
 
-      <div class="set-section"><div class="set-section-title">Display</div>
-        <div class="toggle-row"><span class="toggle-lbl">Dark Mode</span><div class="toggle-sw ${OS.theme==='dark'?'on':''}" id="dark-toggle"></div></div>
+      <div class="set-section"><div class="set-section-title">Display · Premium Themes</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.55;margin-bottom:10px">Fusion is the default Apple + Windows blend. Liquid Glass adds refractive translucent depth, Fluent adds Mica/Acrylic productivity surfaces, and Apple emphasizes a floating dock with polished motion.</div>
+        <div class="premium-theme-grid">
+          ${[
+            ['fusion','Fusion','linear-gradient(135deg,#0a84ff,#60cdff 45%,#70e0c2)'],
+            ['liquid-glass','Liquid Glass','linear-gradient(135deg,rgba(158,216,255,.95),rgba(214,198,255,.62),rgba(255,255,255,.35))'],
+            ['fluent','Fluent','linear-gradient(135deg,#202020,#0078d4)'],
+            ['apple','Apple','linear-gradient(135deg,#0a84ff,#bf5af2,#f7f9ff)']
+          ].map(t=>`<button class="premium-theme-card ${OS.theme===t[0]?'active':''}" onclick="applyTheme('${t[0]}');renderSettings()"><div class="premium-theme-swatch" style="background:${t[2]}"></div><div style="font-weight:800;color:var(--text);font-size:12px">${t[1]}</div><div style="font-size:9px;color:var(--text-muted);margin-top:3px">${OS.theme===t[0]?'Active':'Preview'}</div></button>`).join('')}
+        </div>
       </div>
 
 
@@ -4136,7 +4153,7 @@ function init(){
       }
     };loop();
   })();
-  applyTheme(OS.theme);
+  applyTheme(OS.theme||'fusion');
   applyWallpaper(OS.wallpaper,OS.wallpaper==='wp-custom'?OS.wpCustom:null);
   if(_masterGain)_masterGain.gain.value=OS.volume;
   checkVersion();initBattery();buildDesktopIcons();
@@ -4493,7 +4510,7 @@ function buildFinderApp(body){
   body.style.cssText='overflow:hidden;padding:0;';
   const folders=['/Desktop','/Documents','/Downloads','/Music','/Pictures','/Mods'];
   const fIcons={'/Desktop':'🖥️','/Documents':'📄','/Downloads':'⬇️','/Music':'🎵','/Pictures':'🖼️','/Mods':'🔧'};
-  
+
   window.finderRefresh=()=>{const fw=WM.windows.get('finder');if(fw&&fw.body)buildFinderApp(fw.body);};
 
   const currentFolder=window._finderFolder;
@@ -10457,7 +10474,7 @@ const TOB_AI = {
     recognition.onresult = (event) => {
       const lastResultIndex = event.results.length - 1;
       const transcript = event.results[lastResultIndex][0].transcript.trim().toLowerCase();
-      
+
       console.log("Audio Stream Capture:", transcript);
       if (transcript.includes("hello tob")) {
         this.activateAvatarHUD();
@@ -10487,7 +10504,7 @@ const TOB_AI = {
       const titleEl = win.querySelector('.win-title');
       return titleEl ? titleEl.textContent.trim() : 'Unknown App';
     });
-    
+
     return {
       activeWindows: openWindows,
       activeTheme: document.documentElement.getAttribute('data-theme') || 'dark',
@@ -10506,14 +10523,14 @@ const TOB_AI = {
     if (text.includes("open") || text.includes("launch") || text.includes("start")) {
       TOB_Avatar.setExpression('thinking');
       reply = p.openApp;
-      
+
       if (text.includes("calc") || text.includes("calculator")) { openApp('calc'); }
       else if (text.includes("music") || text.includes("player")) { openApp('music'); }
       else if (text.includes("browser") || text.includes("web")) { openApp('browser'); }
       else if (text.includes("settings") || text.includes("control")) { openApp('settings'); }
       else if (text.includes("task") || text.includes("manager")) { openApp('taskmgr'); }
       else { reply = `Target environment not mapped, but trying to execute core hook.`; }
-      
+
       setTimeout(() => this.speak(reply), 600);
       return;
     }
@@ -10532,12 +10549,12 @@ const TOB_AI = {
     if (text.includes("calendar") || text.includes("schedule") || text.includes("add event")) {
       TOB_Avatar.setExpression('thinking');
       reply = p.calendar;
-      
+
       let eventTitle = "New Task Node";
       if (text.includes("remind me to")) {
         eventTitle = rawText.match(/remind me to (.*)/i)?.[1] || eventTitle;
       }
-      
+
       this.addCalendarEventOffline(eventTitle, new Date().toISOString().split('T')[0]);
       this.speak(`${reply} Added task node: "${eventTitle}" to your local tracking array.`);
       return;
@@ -10556,7 +10573,7 @@ const TOB_AI = {
 
   saveMemory(role, message) {
     this.memory.push({ role, message, date: Date.now() });
-    if (this.memory.length > 100) this.memory.shift(); 
+    if (this.memory.length > 100) this.memory.shift();
     localStorage.setItem("tob_ai_memory", JSON.stringify(this.memory));
   },
 
@@ -10571,13 +10588,13 @@ const TOB_AI = {
     this.saveMemory("tob", text);
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = this.speechSpeed;
-    
+
     utterance.onstart = () => TOB_Avatar.startSpeaking();
     utterance.onend = () => {
       TOB_Avatar.stopSpeaking();
       TOB_Avatar.setExpression('idle');
     };
-    
+
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
   }
@@ -10588,7 +10605,7 @@ const TOB_AI = {
 // ============================================================================
 const TOB_VersionManager = {
   currentVersion: 17.0,
-  
+
   installedHistory: [
     { version: 15.0, type: "major", date: "2026-03-10", notes: "Core Window Sandbox stability integration." },
     { version: 16.0, type: "minor", date: "2026-04-18", notes: "Themes, audio parameters, and system grid layout optimized." },
@@ -10631,7 +10648,7 @@ const TOB_VersionManager = {
     const windowHtml = `
       <div class="set-root" style="color:#fff; font-family:'Rajdhani', sans-serif;">
         <div class="set-title">◈ TOB SYSTEM UPDATE HUB</div>
-        
+
         <div class="set-section">
           <div class="set-section-title">Active Node Diagnostics</div>
           <div style="font-size:18px; font-weight:700; color:var(--neon);">v\${localStorage.getItem("tob_active_version")}</div>
@@ -10677,10 +10694,10 @@ const TOB_VersionManager = {
     setTimeout(() => {
       const container = document.getElementById("tob-rollback-history-stack");
       if (!container) return;
-      
+
       let ledger = JSON.parse(localStorage.getItem("tob_version_ledger") || JSON.stringify(this.installedHistory));
       let active = parseFloat(localStorage.getItem("tob_active_version") || this.currentVersion);
-      
+
       container.innerHTML = ledger.map(item => `
         <div class="changelog-entry \${item.type === 'major' ? 'changelog-major' : ''}" style="display:flex; align-items:center; justify-content:space-between; padding:8px; background:rgba(255,255,255,0.02); border-radius:6px; border-left:3px solid var(--neon);">
           <div style="flex:1;">
@@ -10714,7 +10731,7 @@ const TOB_VersionManager = {
     const parsedVer = parseFloat(targetVersion);
     localStorage.setItem("tob_active_version", parsedVer);
     if(typeof showToast === "function") showToast("Mounting rollback framework kernel node...");
-    
+
     const customizedCode = localStorage.getItem(`tob_source_v${parsedVer}`);
     if (customizedCode) {
       document.open();
